@@ -1,8 +1,11 @@
+let { createElement } = require('./element.js');
+
 export default class ShadowDom {
 
 	constructor(opts) {
 		this.setParams(opts);
 		this.el.attachShadow({ mode: 'open' });
+		this.root = this.el.shadowRoot;
 	}
 
 	setParams(opts) {
@@ -14,9 +17,7 @@ export default class ShadowDom {
 	}
 
 	setOptions(opts) {
-		Object.keys(opts).map(key =>
-			this.setOption(key, opts[key])
-		);
+		Object.keys(opts).map(key => this.setOption(key, opts[key]));
 		return this;
 	}
 
@@ -34,5 +35,11 @@ export default class ShadowDom {
 
 	getDefaultElem() {
 		return document.body.querySelector(this.opts.selector);
+	}
+
+	insert(obj) {
+		let element = createElement(obj);
+		this.root.appendChild(element);
+		return element;
 	}
 }
