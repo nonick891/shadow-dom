@@ -38,8 +38,21 @@ export default class ShadowDom {
 	}
 
 	insert(obj) {
-		let element = createElement(obj);
-		this.root.appendChild(element);
-		return element;
+		return this.appendChild(
+			createElement(obj),
+			this.root
+		);
+	}
+
+	insertChild(obj, selector) {
+		return this.appendChild(
+			createElement(obj),
+			this.root.querySelector(selector)
+		)
+	}
+
+	appendChild(el, parent) {
+		parent.appendChild(el);
+		return el;
 	}
 }
