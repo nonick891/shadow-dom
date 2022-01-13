@@ -1,11 +1,18 @@
-let { createElement } = require('./element.js');
+import { appendElement, getElOr, safeSelect } from './element';
+import { tofNode } from './type-check';
 
 export default class ShadowDom {
+
+	el = null;
+	root = null;
+	inserts = [];
+	rootInsert = null;
 
 	constructor(opts) {
 		this.setParams(opts);
 		this.el.attachShadow({ mode: 'open' });
 		this.root = this.el.shadowRoot;
+		this.rootInsert = this.root;
 	}
 
 	setParams(opts) {
@@ -28,31 +35,47 @@ export default class ShadowDom {
 	}
 
 	setElement(element) {
-		this.el = element instanceof HTMLElement
-			? element
-			: this.getDefaultElem();
+		this.el = getElOr(element, this.opts.selector);
 	}
 
-	getDefaultElem() {
-		return document.body.querySelector(this.opts.selector);
+	insert(obj, selector) {
+		this.pushInsert(this.getInsert(obj, selector));
+		return this;
 	}
 
-	insert(obj) {
-		return this.appendChild(
-			createElement(obj),
-			this.root
-		);
+	pushInsert(element) {
+		this.inserts.push(element);
 	}
 
-	insertChild(obj, selector) {
-		return this.appendChild(
-			createElement(obj),
-			this.root.querySelector(selector)
-		)
+	getInsert(obj, selector) {
+		return appendElement(obj, this.getCurrentElement(selector))
 	}
 
-	appendChild(el, parent) {
-		parent.appendChild(el);
-		return el;
+	bringInserts() {
+		let inserts = [...this.inserts];
+		this.inserts = [];
+		return inserts;
+	}
+
+	/**
+	 * Get Node element type based on selector parameter. Save insert source depends on magic word, selector or Node.
+	 * @param selector
+	 * @returns {null}
+	 */
+	getCurrentElement(selector) {
+		return this.setInsert(selector).queryCurrentRoot();
+	}
+
+	setInsert(source) {
+		this.rootInsert = source
+            ? (source !== 'ShadowRoot' ? source : this.root)
+            : this.rootInsert;
+		return this;
+	}
+
+	queryCurrentRoot() {
+		return tofNode(this.rootInsert)
+		       ? this.rootInsert
+		       : safeSelect(this.root, this.rootInsert);
 	}
 }
