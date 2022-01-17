@@ -1,15 +1,16 @@
-import { tofNode } from './type-check';
+import { tofNode, tofStr } from './type-check';
 
 export const getElOr = (element, selector) =>
-	element instanceof HTMLElement
+	tofNode(element)
 		? element
-		: bodySelector(selector)
+		: (bodySelector(tofStr(element) ? element : selector))
 
 const bodySelector = selector =>
 	document.body.querySelector(selector);
 
 export const safeSelect = (el, selector) =>
-	selector ? el.querySelector(selector) : el;
+	el && selector && !el.isSameNode(selector) 
+		? el.querySelector(selector) : el;
 
 export const appendElement = (obj, parent) =>
 	appendChild(createElement(obj), parent);

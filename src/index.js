@@ -1,4 +1,4 @@
-import { tofNode, tofStr } from './type-check';
+import { tofNode, tofStr, tofU } from './type-check';
 import { appendElement, getElOr, safeSelect } from './element';
 
 export default class ShadowDom {
@@ -10,6 +10,7 @@ export default class ShadowDom {
 
 	constructor(opts) {
 		this.setParams(opts);
+		if (!this.el) return false;
 		this.el.attachShadow({ mode: 'open' });
 		this.root = this.el.shadowRoot;
 		this.rootInsert = this.root;
@@ -31,9 +32,7 @@ export default class ShadowDom {
 	}
 
 	setOption(name, value) {
-		this.opts[name] = value
-			? value
-			: this.opts[name];
+		this.opts[name] = !tofU(value) ? value : this.opts[name];
 	}
 
 	setElement(element) {
@@ -65,7 +64,7 @@ export default class ShadowDom {
 	 * @returns {null}
 	 */
 	getCurrentElement(selector) {
-		return this.setInsert(selector).queryCurrentRoot();
+		return this.setInsert(selector).queryInsertRoot();
 	}
 
 	setInsert(source) {
@@ -75,7 +74,7 @@ export default class ShadowDom {
 		return this;
 	}
 
-	queryCurrentRoot() {
+	queryInsertRoot() {
 		return tofNode(this.rootInsert)
 		       ? this.rootInsert
 		       : safeSelect(this.root, this.rootInsert);
