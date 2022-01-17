@@ -1,5 +1,5 @@
+import { tofNode, tofStr } from './type-check';
 import { appendElement, getElOr, safeSelect } from './element';
-import { tofNode } from './type-check';
 
 export default class ShadowDom {
 
@@ -18,13 +18,15 @@ export default class ShadowDom {
 	setParams(opts) {
 		this.el = null;
 		this.opts = { selector: '.shadow-rooted' };
-		opts instanceof HTMLElement
+		tofNode(opts)
 			? this.setElement(opts)
 			: this.setOptions(opts).setElement()
 	}
 
 	setOptions(opts) {
-		Object.keys(opts).map(key => this.setOption(key, opts[key]));
+		tofStr(opts)
+			? this.setOption('selector', opts)
+			: Object.keys(opts).map(key => this.setOption(key, opts[key]));
 		return this;
 	}
 

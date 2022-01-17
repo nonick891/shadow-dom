@@ -1,2 +1,5 @@
 export const tofNode = node =>
-	node instanceof Node;
+	node instanceof HTMLElement;
+
+export const tofStr = str =>
+	typeof str === 'string';
