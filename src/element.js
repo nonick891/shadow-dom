@@ -39,11 +39,11 @@ const fillProps = (e, props) => {
 	return e;
 };
 
-const setHtml  = (el, { content }) =>
-	content ? el.innerHTML = content : false;
+const setHtml  = (el, { html }) =>
+	html ? el.innerHTML = html : false;
 
 const clean = props =>
-	['tagName', 'content'].map(n => delete props[n]);
+	['tagName', 'html'].map(n => delete props[n]);
 
 const setAttrs = (props, e) =>
 	Object.keys(props).map(key => e.setAttribute(key, props[key]));
