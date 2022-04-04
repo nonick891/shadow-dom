@@ -12,6 +12,9 @@ export const safeSelect = (el, selector) =>
 	el && selector && !el.isSameNode(selector) 
 		? el.querySelector(selector) : el;
 
+export const getContent = el =>
+	el.contentDocument || el.contentWindow.document;
+
 export const appendElement = (obj, parent) =>
 	appendChild(createElement(obj), parent);
 

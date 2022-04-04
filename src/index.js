@@ -1,5 +1,5 @@
 import { tofNode, tofStr, tofU } from './type-check';
-import { appendElement, getElOr, safeSelect } from './element';
+import { appendElement, getElOr, safeSelect, getContent } from './element';
 
 export default class ShadowDom {
 
@@ -11,9 +11,15 @@ export default class ShadowDom {
 	constructor(opts) {
 		this.setParams(opts);
 		if (!this.el) return false;
-		this.el.attachShadow({ mode: 'open' });
+		this.getElement().attachShadow({ mode: 'open' });
 		this.root = this.el.shadowRoot;
 		this.rootInsert = this.root;
+	}
+
+	getElement() {
+		this.el = this.el.tagName === 'IFRAME'
+			 ? getContent(this.el).body : this.el;
+		return this.el;
 	}
 
 	setParams(opts) {
@@ -49,7 +55,7 @@ export default class ShadowDom {
 	}
 
 	getInsert(obj, selector) {
-		return appendElement(obj, this.getCurrentElement(selector))
+		return appendElement(obj, this.getCurrentElement(selector));
 	}
 
 	bringInserts() {
