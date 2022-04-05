@@ -1,4 +1,4 @@
-import { tofNode, tofStr } from './type-check';
+import { tofAppend, tofNode, tofStr } from './type-check';
 
 export const getElOr = (element, selector) =>
 	tofNode(element)
@@ -19,7 +19,7 @@ export const appendElement = (obj, parent) =>
 	appendChild(createElement(obj), parent);
 
 const appendChild = (el, parent) =>
-	tofNode(parent) && tofNode(el) ? parent.appendChild(el) : false;
+	tofAppend(parent) && tofNode(el) ? parent.appendChild(el) : false;
 
 const createElement = obj => {
 	obj = handleTag(obj);
