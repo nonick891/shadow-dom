@@ -81,4 +81,11 @@ export default class ShadowDom {
 		       ? this.rootInsert
 		       : safeSelect(this.root, this.rootInsert);
 	}
+
+	clear() {
+		this.inserts.map(el => el && el.remove());
+		this.inserts = [];
+		this.root.hasChildNodes() && this.root.childNodes.map(el => el.remove());
+		return true;
+	}
 }
