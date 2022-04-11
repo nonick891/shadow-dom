@@ -55,3 +55,12 @@ const clean = props =>
 
 const setAttrs = (props, e) =>
 	Object.keys(props).map(key => e.setAttribute(key, props[key]));
+
+export const removeEl = el =>
+	tofNode(el) && el.remove();
+
+export const removeEls = els =>
+	Array.isArray(els) && els.map(removeEl);
+
+export const removeChildren = root =>
+	root.hasChildNodes() && removeEls(root.childNodes);

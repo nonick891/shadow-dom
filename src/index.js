@@ -1,5 +1,8 @@
 import { tofNode, tofStr, tofU } from './type-check';
-import { appendElement, getElOr, safeSelect, getContent } from './element';
+import {
+	appendElement, getElOr, safeSelect,
+	getContent, removeEls, removeChildren
+} from './element';
 
 export default class ShadowDom {
 
@@ -83,9 +86,9 @@ export default class ShadowDom {
 	}
 
 	clear() {
-		this.inserts.map(el => el && el.remove());
+		removeEls(this.inserts);
 		this.inserts = [];
-		this.root.hasChildNodes() && this.root.childNodes.map(el => el.remove());
+		removeChildren(this.root);
 		return true;
 	}
 }
