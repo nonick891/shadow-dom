@@ -14,7 +14,9 @@ export default class ShadowDom {
 	constructor(opts) {
 		this.setParams(opts);
 		if (!this.el) return false;
-		this.el.attachShadow({ mode: 'open' });
+		if (!this.el.shadowRoot) {
+			this.el.attachShadow({ mode: 'open' });
+		}
 		this.root = this.el.shadowRoot;
 		this.rootInsert = this.root;
 	}
