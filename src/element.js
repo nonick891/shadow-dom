@@ -47,7 +47,7 @@ const fillProps = (e, props) => {
 	return e;
 };
 
-const setHtml  = (el, { html }) =>
+const setHtml = (el, { html }) =>
 	html ? el.innerHTML = html : false;
 
 const clean = props =>
