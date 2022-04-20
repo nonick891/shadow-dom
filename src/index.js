@@ -46,8 +46,25 @@ export default class ShadowDom {
 		          ? getContent(el).body : el;
 	}
 
-	insert(obj, selector) {
-		this.pushInsert(this.getInsert(obj, selector));
+	/**
+	 *
+	 * @param {Array<object>} prints
+	 * @param {String} selector
+	 * @returns {ShadowDom}
+	 */
+	insertAll(prints, selector) {
+		prints.map(print => this.insert(print, selector));
+		return this;
+	}
+
+	/**
+	 *
+	 * @param {Object} print
+	 * @param selector
+	 * @returns {ShadowDom}
+	 */
+	insert(print, selector) {
+		this.pushInsert(this.getInsert(print, selector));
 		return this;
 	}
 
