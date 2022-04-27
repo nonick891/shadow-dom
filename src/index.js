@@ -42,7 +42,7 @@ export default class ShadowDom {
 
 	setElement(element) {
 		let el = getElOr(element, this.opts.selector);
-		this.el = el.tagName === 'IFRAME'
+		this.el = el && el.tagName === 'IFRAME'
 		          ? getContent(el).body : el;
 	}
 
