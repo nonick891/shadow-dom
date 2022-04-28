@@ -66,4 +66,17 @@ export const removeChildren = root =>
 	root.hasChildNodes() && removeEls(root.childNodes);
 
 export const matches = (selector) =>
-	(node) => node.matches(selector);
+	(node) => node.matches(selector) || node.querySelector(selector);
+
+export const find = (array, selector) => {
+	let el = array.find(matches(selector));
+	return querySelector(el, selector);
+};
+
+export const querySelector = (el, selector) =>
+	el && el instanceof HTMLElement ? el.querySelector(selector) : false
+
+export const findAll = (array, selector) => {
+	let filtered = array.filter(matches(selector));
+	return filtered.map(el => querySelector(el, selector));
+};
