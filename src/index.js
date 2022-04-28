@@ -1,7 +1,8 @@
 import { tofNode, tofStr, tofU } from './type-check';
 import {
 	appendElement, getElOr, safeSelect,
-	getContent, removeEls, removeChildren
+	getContent, removeEls, removeChildren,
+	matches
 } from './element';
 
 export default class ShadowDom {
@@ -80,6 +81,14 @@ export default class ShadowDom {
 		let inserts = [...this.inserts];
 		this.inserts = [];
 		return inserts;
+	}
+
+	find(selector) {
+		return this.inserts.find(matches(selector));
+	}
+
+	findAll(selector) {
+		return this.inserts.filter(matches(selector));
 	}
 
 	/**

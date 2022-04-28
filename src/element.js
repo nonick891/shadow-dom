@@ -64,3 +64,6 @@ export const removeEls = els =>
 
 export const removeChildren = root =>
 	root.hasChildNodes() && removeEls(root.childNodes);
+
+export const matches = (selector) =>
+	(node) => node.matches(selector);
