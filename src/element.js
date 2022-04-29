@@ -69,8 +69,9 @@ export const matches = (selector) =>
 	(node) => node.matches(selector) || node.querySelector(selector);
 
 export const find = (array, selector) => {
-	let el = array.find(matches(selector));
-	return querySelector(el, selector);
+	let el = array.find(matches(selector)),
+		child = querySelector(el, selector);
+	return child ? child : el;
 };
 
 export const querySelector = (el, selector) =>
@@ -78,5 +79,8 @@ export const querySelector = (el, selector) =>
 
 export const findAll = (array, selector) => {
 	let filtered = array.filter(matches(selector));
-	return filtered.map(el => querySelector(el, selector));
+	return filtered.map(el => {
+		let child = querySelector(el, selector);
+		return child ? child : el;
+	});
 };
