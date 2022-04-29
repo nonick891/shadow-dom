@@ -21,15 +21,22 @@ export const getContent = iframe =>
 	iframe.contentDocument || iframe.contentWindow.document;
 
 export const appendElement = (obj, parent) =>
-	appendChild(createElement(obj), parent);
+	appendChild(createElement(handleTag(obj)), parent);
 
 const appendChild = (el, parent) =>
 	tofAppend(parent) && tofNode(el) ? parent.appendChild(el) : false;
 
-const createElement = obj => {
-	obj = handleTag(obj);
-	return fillProps(document.createElement(obj.tagName), obj);
-}
+const createElement = obj =>
+	fillProps(createChild(obj), obj);
+
+const createChild = obj => {
+	let parent = create(obj.tagName);
+	if (obj.child) obj.child.map(child => appendElement(child, parent));
+	return parent;
+};
+
+const create = tagName =>
+	document.createElement(tagName)
 
 const handleTag = obj =>
 	obj && obj.tagName ? obj : addTag(obj);
@@ -51,7 +58,7 @@ const setHtml = (el, { html }) =>
 	html ? el.innerHTML = html : false;
 
 const clean = props =>
-	['tagName', 'html'].map(n => delete props[n]);
+	['tagName', 'html', 'child'].map(n => delete props[n]);
 
 const setAttrs = (props, e) =>
 	Object.keys(props).map(key => e.setAttribute(key, props[key]));
