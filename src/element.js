@@ -84,7 +84,7 @@ export const find = (array, selector) => {
 export const querySelector = (el, selector) =>
 	el && el instanceof HTMLElement ? el.querySelector(selector) : false
 
-export const findAll = (array, selector) => {
+export const select = (array, selector) => {
 	let filtered = array.filter(matches(selector));
 	return filtered.map(el => {
 		let child = querySelector(el, selector);

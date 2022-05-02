@@ -2,7 +2,7 @@ import { tofNode, tofStr, tofU } from './type-check';
 import {
 	appendElement, getElOr, safeSelect,
 	getContent, removeEls, removeChildren,
-	find, findAll
+	find, select
 } from './element';
 
 export default class ShadowDom {
@@ -83,12 +83,16 @@ export default class ShadowDom {
 		return inserts;
 	}
 
+	append(selector, element) {
+		this.find(selector).appendChild(element);
+	}
+
 	find(selector) {
 		return find(this.inserts, selector);
 	}
 
-	findAll(selector) {
-		return findAll(this.inserts, selector);
+	select(selector) {
+		return select(this.inserts, selector);
 	}
 
 	/**
