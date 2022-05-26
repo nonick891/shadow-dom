@@ -95,6 +95,10 @@ export default class ShadowDom {
 		return select(this.inserts, selector);
 	}
 
+	closest(selector) {
+		return this.root.host.closest(selector);
+	}
+
 	/**
 	 * Get Node element type based on selector parameter. Save insert source depends on magic word, selector or Node.
 	 * @param selector
