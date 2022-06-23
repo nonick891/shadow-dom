@@ -58,7 +58,7 @@ const setHtml = (el, { html }) =>
 	html ? el.innerHTML = html : false;
 
 const clean = props =>
-	['tagName', 'html', 'child'].map(n => delete props[n]);
+	['tagName', 'html', 'child', 'dom-link'].map(n => delete props[n]);
 
 const setAttrs = (props, e) =>
 	Object.keys(props).map(key => e.setAttribute(key, props[key]));
