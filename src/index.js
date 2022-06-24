@@ -1,9 +1,5 @@
 import { tofNode, tofStr, tofU } from './type-check';
-import {
-	appendElement, getElOr, safeSelect,
-	getContent, removeEls, removeChildren,
-	find, select
-} from './element';
+import elManipulator from 'html-manipulator';
 
 export default class ShadowDom {
 
@@ -42,9 +38,9 @@ export default class ShadowDom {
 	}
 
 	setElement(element) {
-		let el = getElOr(element, this.opts.selector);
+		let el = elManipulator.getElOr(element, this.opts.selector);
 		this.el = el && el.tagName === 'IFRAME'
-		          ? getContent(el).body : el;
+		          ? elManipulator.getContent(el).body : el;
 	}
 
 	/**
@@ -74,7 +70,7 @@ export default class ShadowDom {
 	}
 
 	getInsert(obj, selector) {
-		return appendElement(obj, this.getCurrentElement(selector));
+		return elManipulator.appendElement(obj, this.getCurrentElement(selector));
 	}
 
 	bringInserts() {
@@ -88,11 +84,11 @@ export default class ShadowDom {
 	}
 
 	find(selector) {
-		return find(this.inserts, selector);
+		return elManipulator.find(this.inserts, selector);
 	}
 
 	select(selector) {
-		return select(this.inserts, selector);
+		return elManipulator.select(this.inserts, selector);
 	}
 
 	closest(selector) {
@@ -118,13 +114,13 @@ export default class ShadowDom {
 	queryInsertRoot() {
 		return tofNode(this.rootInsert)
 		       ? this.rootInsert
-		       : safeSelect(this.root, this.rootInsert);
+		       : elManipulator.safeSelect(this.root, this.rootInsert);
 	}
 
 	clear() {
-		removeEls(this.inserts);
+		elManipulator.removeEls(this.inserts);
 		this.inserts = [];
-		removeChildren(this.root);
+		elManipulator.removeChildren(this.root);
 		return true;
 	}
 }
